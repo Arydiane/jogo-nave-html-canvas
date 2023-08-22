@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Canvas</title>
+</head>
+<body>
+    <canvas id="meu_canvas" width="500" height="300"></canvas>
+    <script>
+        // Canvas e contexto
+        const canvas = document.getElementById('meu_canvas');
+        const context = canvas.getContext('2d');
+        // Carregar a imagem
+        let imagem = new Image();
+        imagem.src = 'img/ovni.png';
+        imagem.onload = function () {
+            let x = 20;
+            // Desenhar as imagens
+            for (let i = 1; i <= 5; i++) {
+                context.drawImage(imagem, x, 20, 64, 32);
+                x += 70;
+            }
+
+            // Reduzindo para metade do tamanho
+            context.drawImage(imagem, 20, 100, 32, 16);
+            // Ampliando para o dobro do tamanho
+            context.drawImage(imagem, 70, 100, 128, 64);
+        }
+    </script>
+</body>
+
+</html>
