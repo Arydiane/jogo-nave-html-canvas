@@ -1,6 +1,8 @@
 // Códigos únicos para as direções
 const DIRECAO_ESQUERDA = 1;
 const DIRECAO_DIREITA = 2;
+const DIRECAO_ACIMA = 3;
+const DIRECAO_ABAIXO = 4;
 
 function Heroi(context, teclado, animacao) {
     this.context = context;
@@ -21,6 +23,12 @@ Heroi.prototype = {
         } else if (this.teclado.pressionada(SETA_DIREITA) && this.x < this.context.canvas.width - 20) {
             this.direcao = DIRECAO_DIREITA;
             this.x += 10;
+        } else if (this.teclado.pressionada(SETA_ACIMA) && this.y > 0) {
+            this.direcao = DIRECAO_ACIMA; 
+            this.y -= 10;
+        } else if (this.teclado.pressionada(SETA_ABAIXO) && this.context.canvas.height - 20) {
+            this.direcao = DIRECAO_ABAIXO; 
+            this.y += 10; 
         }
     },
     desenhar: function () {
@@ -35,8 +43,12 @@ Heroi.prototype = {
 
         if (this.direcao == DIRECAO_ESQUERDA) {
             tiro.velocidadeX = -20;
-        } else {
+        } else if (this.direcao == DIRECAO_DIREITA) {
             tiro.velocidadeX = 20;
+        } else if (this.direcao == DIRECAO_ACIMA) {
+            tiro.velocidadeY = -20; 
+        } else {
+            tiro.velocidadeY = 20; 
         }
 
         this.animacao.novoSprite(tiro);
