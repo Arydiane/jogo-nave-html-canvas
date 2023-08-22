@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Canvas</title>
+</head>
+<body>
+    <canvas id="meu_canvas" width="300" height="300"></canvas>
+    <script>
+        // Canvas e contexto
+        const canvas = document.getElementById('meu_canvas');
+        const context = canvas.getContext('2d');
+        // Cores e espessura da linha
+        context.fillStyle = 'gray';
+        context.strokeStyle = 'black';
+        context.lineWidth = 2;
+
+        // Primeiro arco:
+        context.beginPath();
+        // Desenha arco sentido anti-horário
+        context.arc(50, 50, 40, 90 * Math.PI / 180, 270 * Math.PI / 180,
+            false);
+        // Preenchimento
+        context.fill();
+        // Contorno
+        context.stroke();
+
+        // Segundo arco 
+        context.beginPath();
+        // Desenha arco sentido horário
+        context.arc(150, 50, 40, 90 * Math.PI / 180, 270 * Math.PI / 180,
+            true);
+        context.fill();
+        context.stroke();
+
+        // Circunferência completa
+        context.beginPath();
+        context.arc(250, 50, 40, 0, 2 * Math.PI);
+        context.fill();
+        context.stroke();
+    </script>
+</body>
+</html>
