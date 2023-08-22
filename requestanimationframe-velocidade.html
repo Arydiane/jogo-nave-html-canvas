@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Canvas</title>
+</head>
+<body>
+    <label>
+        Selecione a velocidade do movimento: 
+        <input type="range" min="10" max="1000" id="velocidade" step="10" />
+    </label>
+    <br>
+    <canvas id="meu_canvas" width="600" height="300"></canvas>
+    <script>
+        // Canvas e contexto
+        const canvas = document.getElementById('meu_canvas');
+        const context = canvas.getContext('2d');
+        const inputVelocidade = document.querySelector('#velocidade'); 
+
+        // Dados da bola
+        let x = 20;
+        let y = 100;
+        let raio = 15;
+
+        // Momento inicial
+        let anterior = new Date().getTime();
+
+        // Iniciar a animação
+        requestAnimationFrame(mexerBola);
+        // Função de animação
+        function mexerBola() {
+            
+            // Momento atual
+            let agora = new Date().getTime();
+            // Diferença
+            const decorrido = agora - anterior;
+
+            // Limpar o Canvas
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Desenhar a bola
+            context.beginPath();
+            context.arc(x, y, raio, 0, Math.PI * 2);
+            context.fill();
+
+            //Bola move-se mais lentamente, pois agora estamos trabalhando com pixels por segundo 
+            //para mover mais rápido basta aumentar a velocidade
+            const velocidade = inputVelocidade.value;
+            console.log('Velocidade: ', velocidade)
+            x += velocidade * decorrido / 1000;
+
+            //quando sair da tela retorna para ponto inicial
+            if (x > canvas.width) {
+                x = 0; 
+            }
+
+            // Guardamos o instante para o próximo ciclo
+            anterior = agora;
+            // Chamar o próximo ciclo da animação
+            requestAnimationFrame(mexerBola);
+        }
+    </script>
+</body>
+
+</html>
