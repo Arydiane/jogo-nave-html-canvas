@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Canvas</title>
+</head>
+<body>
+    <canvas id="meu_canvas" width="500" height="500"></canvas>
+    <script>
+        // Canvas e contexto
+        const canvas = document.getElementById('meu_canvas');
+        const context = canvas.getContext('2d');
+
+        // Iniciar o caminho (apaga desenhos anteriores)
+        context.beginPath();
+
+        // Desenhar uma estrela
+        context.moveTo(75, 250); // Ponto inicial
+        context.lineTo(150, 50);
+        context.lineTo(225, 250);
+        context.lineTo(50, 120);
+        context.lineTo(250, 120);
+        context.lineTo(75, 250);
+
+        //Preenche a estrela 
+        context.fillStyle = 'red';
+        context.fill();
+
+        // Configurar a linha
+        context.lineWidth = 5;
+        context.strokeStyle = 'black';
+        // Traçar as linhas do caminho
+        context.stroke();
+    </script>
+</body>
+</html>
