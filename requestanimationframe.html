@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Canvas</title>
+</head>
+
+<body>
+    <canvas id="meu_canvas" width="600" height="300"></canvas>
+    <script>
+        // Canvas e contexto
+        const canvas = document.getElementById('meu_canvas');
+        const context = canvas.getContext('2d');
+
+        // Dados da bola
+        let x = 20;
+        let y = 100;
+        let raio = 5;
+        let sentido = 1; 
+
+        // Iniciar a animação
+        requestAnimationFrame(mexerBolaVaiVem);
+        // Função de animação
+        function mexerBolaVaiVem() {
+            // Limpar o Canvas
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Desenhar a bola
+            context.beginPath();
+            context.arc(x, y, raio, 0, Math.PI * 2);
+            context.fill();
+
+            // Deslocar 20 pixels para a direita quando canva termina muda sentido, realizando assim movimento de vai e vem
+            if (x > canvas.width) {
+                sentido = -1;
+            } else if (x < 0) {
+                sentido = 1
+            }
+
+            x = x + sentido * 20; 
+
+            // Chamar o próximo ciclo da animação
+            requestAnimationFrame(mexerBolaVaiVem);
+        }
+
+    </script>
+</body>
+
+</html>
