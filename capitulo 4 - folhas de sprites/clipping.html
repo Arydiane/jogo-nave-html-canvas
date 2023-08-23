@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Canvas</title>
+</head>
+
+<body>
+    <h1>Spritesheet - recorte e enquadramento (clipping)</h1>
+    <canvas id="canvas_clipping" width="500" height="500"></canvas>
+    <script>
+        const imgSonic = new Image(); 
+        imgSonic.src = 'spritesheet.png'; 
+        imgSonic.onload = function() {
+            // Passo estes valores conforme a minha spritesheet
+            const linhas = 3; 
+            const colunas = 8; 
+            
+            // Dimensão de cada quadro
+            const largura = imgSonic.width / colunas; 
+            const altura = imgSonic.height / linhas; 
+
+            // Quadro que eu quero (expresso em linha e coluna)
+            const queroLinha = 2; 
+            const queroColuna = 7; 
+
+            // Posição de recorte
+            const x = largura * queroColuna;
+            const y = altura * queroLinha;
+
+            const context = document.getElementById('canvas_clipping').getContext('2d'); 
+
+            context.drawImage( 
+                imgSonic, 
+                x, 
+                y, 
+                largura, 
+                altura, 
+                100, // Posição x no canvas onde quero desenhar
+                100, // Posição y no canvas onde quero desenhar
+                largura, 
+                altura
+            )
+        }
+    </script>
+</body>
+
+</html>
