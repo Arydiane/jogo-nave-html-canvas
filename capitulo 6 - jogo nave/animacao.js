@@ -9,7 +9,7 @@ Animacao.prototype = {
 
     novoSprite: function(sprite) {
         this.sprites.push(sprite);
-        
+        sprite.animacao = this; 
     },
 
     ligar: function() {
