@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HTML Canvas</title>
+
+    <script src="animacao.js"></script>
+    <script src="teclado.js"></script>
+    <script src="nave.js"></script>
+</head>
+
+<body>
+    <h1>Nave Espacial Controlável</h1>
+    <canvas id="canvas_nave" width="500" height="500" style="border: 1px solid gray;"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas_nave');
+        const context = canvas.getContext('2d');
+
+        // Teclado e animação
+        const teclado = new Teclado(document);
+        const animacao = new Animacao(context);
+
+        // Sprite da nave e sua imagem
+        const imgNave = new Image();
+        imgNave.src = 'img/nave.png';
+
+        const nave = new Nave(context, teclado, imgNave);
+        animacao.novoSprite(nave);
+
+        // Quando carregar a imagem, iniciar a animação
+        imgNave.onload = function () {
+            
+            // Centralizada na horizontal e alinha embaixo na vertical
+            nave.x = canvas.width / 2 - imgNave.width / 2;
+            nave.y = canvas.height - imgNave.height;
+            nave.velocidade = 5;
+
+            animacao.ligar();
+        }
+
+    </script>
+</body>
+
+</html>
