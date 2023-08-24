@@ -9,6 +9,7 @@
 
     <script src="animacao.js"></script>
     <script src="teclado.js"></script>
+    <script src="fundo.js"></script>
     <script src="nave.js"></script>
     <script src="tiro.js"></script>
 </head>
@@ -17,34 +18,77 @@
     <h1>Efetuando disparos</h1>
     <canvas id="canvas_nave" width="500" height="500" style="border: 1px solid gray;"></canvas>
     <script>
-        const canvas = document.getElementById('canvas_nave');
-        const context = canvas.getContext('2d');
 
-        // Teclado e animação
-        const teclado = new Teclado(document);
-        const animacao = new Animacao(context);
+        // Carrega as imagens
+        const imgEspaco = new Image();
+        imgEspaco.src = 'img/fundo-espaco.png';
+
+        const imgEstrelas = new Image();
+        imgEstrelas.src = 'img/fundo-estrelas.png';
+
+        const imgNuvens = new Image();
+        imgNuvens.src = 'img/fundo-nuvens.png';
 
         // Sprite da nave e sua imagem
         const imgNave = new Image();
         imgNave.src = 'img/nave.png';
 
-        const nave = new Nave(context, teclado, imgNave);
-        animacao.novoSprite(nave);
+        let carregadas = 0;
+        const total = 3;
 
-        teclado.disparou(ESPACO, function() {
-            nave.atirar(); 
-        })
+        imgEspaco.onload = carregando;
+        imgEstrelas.onload = carregando;
+        imgNuvens.onload = carregando;
 
-        // Quando carregar a imagem, iniciar a animação
-        imgNave.onload = function () {
-            
-            // Centralizada na horizontal e alinha embaixo na vertical
-            nave.x = canvas.width / 2 - imgNave.width / 2;
-            nave.y = canvas.height - imgNave.height;
-            nave.velocidade = 5;
+        function carregando() {
+            carregadas++;
+            if (carregadas === total) {
+                iniciar();
+            }
+        }
+
+        function iniciar() {
+            const canvas = document.getElementById('canvas_nave');
+            const context = canvas.getContext('2d');
+
+            // Teclado e animação
+            const teclado = new Teclado(document);
+            // const animacao = new Animacao(context);
+
+            // Passo o context e a imagem para os objetos Fundo
+            const fundoEspaco = new Fundo(context, imgEspaco);
+            const fundoEstrelas = new Fundo(context, imgEstrelas);
+            const fundoNuvens = new Fundo(context, imgNuvens);
+
+            // Quando carregar a imagem, iniciar a animação
+            imgNave.onload = function () {
+                // Centralizada na horizontal e alinha embaixo na vertical
+                nave.x = canvas.width / 2 - imgNave.width / 2;
+                nave.y = canvas.height - imgNave.height;
+                nave.velocidade = 5;
+            }
+
+            const nave = new Nave(context, teclado, imgNave);
+
+            // Cada um a uma velocidade diferente
+            fundoEspaco.velocidade = 3;
+            fundoEstrelas.velocidade = 7;
+            fundoNuvens.velocidade = 10;
+
+            const animacao = new Animacao(context);
+            animacao.novoSprite(fundoEspaco);
+            animacao.novoSprite(fundoEstrelas);
+            animacao.novoSprite(fundoNuvens);
+            animacao.novoSprite(nave);
 
             animacao.ligar();
+
+            teclado.disparou(ESPACO, function () {
+                nave.atirar();
+            })
         }
+
+
 
     </script>
 </body>
