@@ -9,11 +9,22 @@ function Tiro(context, nave) {
     this.x = nave.x + nave.imagem.width / 2 - this.largura / 2;
     this.y = nave.y - this.altura;
     this.velocidade = 10;
+
 }
 
 Tiro.prototype = {
     atualizar: function () {
-        this.y -= this.velocidade;
+        // this.y -= this.velocidade;
+
+        if (this.nave.direcao == DIRECAO_ESQUERDA) {
+           this.x -= this.velocidade;
+        } else if (this.nave.direcao == DIRECAO_DIREITA) {
+            this.x += this.velocidade;
+        } else if (this.nave.direcao == DIRECAO_ACIMA) {
+            this.y -= this.velocidade; 
+        } else {
+            this.y += this.velocidade; 
+        }
     },
 
     desenhar: function () {
