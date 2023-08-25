@@ -6,6 +6,7 @@ function Spritesheet(context, imagem, linhas, colunas) {
     this.intervalo = 0;
     this.linha = 0;
     this.coluna = 0;
+    this.fimDoCiclo = null;
 }
 Spritesheet.prototype = {
     proximoQuadro: function () {
@@ -23,7 +24,12 @@ Spritesheet.prototype = {
         if (this.coluna < this.numColunas - 1) {
             this.coluna++;
         } else {
+            
             this.coluna = 0;
+            // Avisar que acabou um ciclo!
+            if (this.fimDoCiclo) {
+                this.fimDoCiclo();
+            }
         }
 
         // Guardar hora da última mudança

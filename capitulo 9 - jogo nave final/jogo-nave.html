@@ -14,6 +14,7 @@
     <script src="js/nave.js"></script>
     <script src="js/ovni.js"></script>
     <script src="js/tiro.js"></script>
+    <script src="js/explosao.js"></script>
 </head>
 
 <body>
@@ -39,7 +40,8 @@
                 estrelas: 'fundo-estrelas.png',
                 nuvens: 'fundo-nuvens.png',
                 nave: 'nave-spritesheet.png',
-                ovni: 'ovni.png'
+                ovni: 'ovni.png',
+                explosao: 'explosao.png'
             };
 
             // Carregar todas
@@ -125,7 +127,7 @@
 
         function novoOvni() {
             const imgOvni = imagens.ovni;
-            const ovni = new Ovni(context, imgOvni);
+            const ovni = new Ovni(context, imgOvni, imagens.explosao);
 
             // Mínimo: 500; Máximo: 800
             ovni.velocidade = Math.floor(500 + Math.random() * (800 - 500 + 1));
