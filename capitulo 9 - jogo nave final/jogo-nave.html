@@ -99,7 +99,42 @@
             });
 
             animacao.ligar();
+            criacaoInimigos();
         }
+
+        function criacaoInimigos() {
+            criadorInimigos = {
+                ultimoOvni: new Date().getTime(),
+                processar: function () {
+                    let agora = new Date().getTime();
+                    let decorrido = agora - this.ultimoOvni;
+
+                    //verifica se já passou 1s = 1000 milisegundos
+                    if (decorrido > 1000) {
+                        novoOvni();
+                        this.ultimoOvni = agora;
+                    }
+                }
+            };
+
+            animacao.novoProcessamento(criadorInimigos);
+        }
+
+        function novoOvni() {
+            const imgOvni = imagens.ovni;
+            const ovni = new Ovni(context, imgOvni);
+
+            // Mínimo: 5; Máximo: 20
+            ovni.velocidade = Math.floor(5 + Math.random() * (20 - 5 + 1));
+            // Mínimo: 0; Máximo: largura do canvas - largura do ovni
+            ovni.x = Math.floor(Math.random() * (canvas.width - imgOvni.width + 1));
+            // Descontar a altura
+            ovni.y = -imgOvni.height;
+
+            animacao.novoSprite(ovni);
+            colisor.novoSprite(ovni);
+        }
+
     </script>
 </body>
 
