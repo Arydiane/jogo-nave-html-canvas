@@ -138,104 +138,151 @@
             //Game Over
             nave.acabaramVidas = function () {
                 animacao.desligar();
-                alert('GAME OVER');
+                gameOver();
             }
 
             //Pontuação
-            colisor.aoColidir = function (o1, o2) {
+            colisor.aoColidir = function (obj1, obj2) {
                 // Tiro com Ovni
-                if ((o1 instanceof Tiro && o2 instanceof Ovni) ||
-                    (o1 instanceof Ovni && o2 instanceof Tiro)) {
+                if ((obj1 instanceof Tiro && obj2 instanceof Ovni) ||
+                    (obj1 instanceof Ovni && obj2 instanceof Tiro)) {
                     painel.pontuacao += 10;
                 }
             }
         }
 
-            function pausarJogo() {
+        function pausarJogo() {
 
-                if (animacao.ligado) {
-                    animacao.desligar();
-                    musicaAcao.pause(); 
-                    ativarTiro(false);
+            if (animacao.ligado) {
+                animacao.desligar();
+                musicaAcao.pause();
+                ativarTiro(false);
 
-                    //Escreve mensagem de pausa na tela
-                    context.save();
-                    context.fillStyle = 'white';
-                    context.strokeStyle = 'black';
-                    context.font = '50px sans-serif';
-                    context.fillText("Pausado", 160, 200);
-                    context.strokeStyle("Pausado", 160, 200);
-                    context.restore();
+                //Escreve mensagem de pausa na tela
+                context.save();
+                context.fillStyle = 'white';
+                context.strokeStyle = 'black';
+                context.font = '50px sans-serif';
+                context.fillText("Pausado", 160, 200);
+                context.strokeText("Pausado", 160, 200);
+                context.restore();
 
-                } else {
-                    criadorInimigos.ultimoOvni = new Date().getTime();
-                    animacao.ligar();
-                    musicaAcao.play(); 
-                    ativarTiro(true);
-                }
-            }
-
-            function ativarTiro(ativar) {
-                if (ativar) {
-                    teclado.disparou(ESPACO, function () {
-                        nave.atirar();
-                    });
-                } else {
-                    teclado.disparou(ESPACO, null);
-                }
-            }
-
-            function criacaoInimigos() {
-                criadorInimigos = {
-                    ultimoOvni: new Date().getTime(),
-                    processar: function () {
-                        let agora = new Date().getTime();
-                        let decorrido = agora - this.ultimoOvni;
-
-                        //verifica se já passou 1s = 1000 milisegundos
-                        if (decorrido > 1000) {
-                            novoOvni();
-                            this.ultimoOvni = agora;
-                        }
-                    }
-                };
-
-                animacao.novoProcessamento(criadorInimigos);
-            }
-
-            function novoOvni() {
-                const imgOvni = imagens.ovni;
-                const ovni = new Ovni(context, imgOvni, imagens.explosao);
-
-                // Mínimo: 500; Máximo: 800
-                ovni.velocidade = Math.floor(500 + Math.random() * (800 - 500 + 1));
-                // Mínimo: 0; Máximo: largura do canvas - largura do ovni
-                ovni.x = Math.floor(Math.random() * (canvas.width - imgOvni.width + 1));
-                // Descontar a altura
-                ovni.y = -imgOvni.height;
-
-                animacao.novoSprite(ovni);
-                colisor.novoSprite(ovni);
-            }
-
-            function mostrarBotaoJogar() {
-                document.getElementById('botao_jogar').style.display = 'block';
-            }
-
-            function iniciarJogo() {
-                //Tiro
-                ativarTiro(true);
-
-                // Pausa
-                teclado.disparou(ENTER, pausarJogo);
-
-                //Pontuação
-                painel.pontuacao = 0;
-
-                document.getElementById('botao_jogar').style.display = 'none';
-                musicaAcao.play();
+            } else {
+                criadorInimigos.ultimoOvni = new Date().getTime();
                 animacao.ligar();
+                musicaAcao.play();
+                ativarTiro(true);
             }
+        }
+
+        function ativarTiro(ativar) {
+            if (ativar) {
+                teclado.disparou(ESPACO, function () {
+                    nave.atirar();
+                });
+            } else {
+                teclado.disparou(ESPACO, null);
+            }
+        }
+
+        function criacaoInimigos() {
+            criadorInimigos = {
+                ultimoOvni: new Date().getTime(),
+                processar: function () {
+                    let agora = new Date().getTime();
+                    let decorrido = agora - this.ultimoOvni;
+
+                    //verifica se já passou 1s = 1000 milisegundos
+                    if (decorrido > 1000) {
+                        novoOvni();
+                        this.ultimoOvni = agora;
+                    }
+                }
+            };
+
+            animacao.novoProcessamento(criadorInimigos);
+        }
+
+        function novoOvni() {
+            const imgOvni = imagens.ovni;
+            const ovni = new Ovni(context, imgOvni, imagens.explosao);
+
+            // Mínimo: 500; Máximo: 800
+            ovni.velocidade = Math.floor(500 + Math.random() * (800 - 500 + 1));
+            // Mínimo: 0; Máximo: largura do canvas - largura do ovni
+            ovni.x = Math.floor(Math.random() * (canvas.width - imgOvni.width + 1));
+            // Descontar a altura
+            ovni.y = -imgOvni.height;
+
+            animacao.novoSprite(ovni);
+            colisor.novoSprite(ovni);
+        }
+
+        function mostrarBotaoJogar() {
+            document.getElementById('botao_jogar').style.display = 'block';
+        }
+
+        function iniciarJogo() {
+            //atualiza o horário do ultimo ciclo
+            criadorInimigos.ultimoOvni = new Date().getTime();
+
+            //Tiro
+            ativarTiro(true);
+
+            // Pausa
+            teclado.disparou(ENTER, pausarJogo);
+
+            //Pontuação
+            painel.pontuacao = 0;
+
+            document.getElementById('botao_jogar').style.display = 'none';
+            musicaAcao.play();
+            animacao.ligar();
+        }
+
+        function gameOver() {
+            // Tiro
+            ativarTiro(false);
+
+            // Pausa
+            teclado.disparou(ENTER, null);
+
+            // Parar a música e rebobinar
+            musicaAcao.pause();
+            musicaAcao.currentTime = 0.0;
+ 
+            // Tirar todos os inimigos da tela
+            removerInimigos();
+
+            // Fundo
+            context.drawImage(imagens.espaco, 0, 0, canvas.width, canvas.height);
+
+            // Texto "Game Over"
+            context.save();
+            context.fillStyle = 'white';
+            context.strokeStyle = 'black';
+            context.font = '70px sans-serif';
+            context.fillText("GAME OVER", 40, 200);
+            context.strokeText("GAME OVER", 40, 200);
+            context.restore();
+
+            // Volta o botão "Jogar"
+            mostrarBotaoJogar();
+
+            // Restaurar as condições da nave
+            nave.vidasExtras = 3;
+            nave.posicionar();
+            animacao.novoSprite(nave);
+            colisor.novoSprite(nave);
+        }
+
+        function removerInimigos() {
+            for (let i in animacao.sprites) {
+                if (animacao.sprites[i] instanceof Ovni) {
+                    animacao.excluirSprite(animacao.sprites[i]);
+                }     
+            }
+        }
 
     </script>
 </body>
