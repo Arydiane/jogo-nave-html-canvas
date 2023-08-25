@@ -7,12 +7,12 @@ function Nave(context, teclado, imagem, imgExplosao) {
     this.x = 0;
     this.y = 0;
     this.velocidade = 0;
-
     this.spritesheet = new Spritesheet(context, imagem, 3, 2);
     this.spritesheet.linha = 0;
     this.spritesheet.intervalo = 100;
-
     this.imgExplosao = imgExplosao;
+    this.acabaramVidas = null;
+    this.vidasExtras = 3;
 }
 
 Nave.prototype = {
@@ -94,11 +94,31 @@ Nave.prototype = {
             this.animacao.novoSprite(exp1);
             this.animacao.novoSprite(exp2);
 
-            // Fim de jogo!
+            let nave = this;
             exp1.fimDaExplosao = function () {
-                this.animacao.desligar();
-                alert('GAME OVER');
+                nave.vidasExtras--;
+
+                if (nave.vidasExtras < 0) {
+                    if (nave.acabaramVidas) {
+                        nave.acabaramVidas();
+                    }
+                } else {
+                    // Recolocar a nave no jogo
+                    nave.colisor.novoSprite(nave);
+                    nave.animacao.novoSprite(nave);
+
+                    nave.posicionar();
+                }
             }
         }
+    }, 
+    posicionar: function() {
+        let canvas = this.context.canvas;
+        // posiciona no meio da tela alinhada abaixo
+        // this.x = canvas.width / 2 - imgNaveLargura / 2;
+        this.x = canvas.width / 2 - 18;
+        //desconta a altura da nave 
+        // this.y = canvas.height - imgNaveAltura;
+        this.y = canvas.height - 48;
     }
 }

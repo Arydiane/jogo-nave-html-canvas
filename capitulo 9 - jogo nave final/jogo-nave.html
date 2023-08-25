@@ -126,13 +126,17 @@
             estrelas.velocidade = 150;
             nuvens.velocidade = 500;
 
-            // Nave - desconta a largura da nave/2 = 36/2 = 18
-            nave.x = canvas.width / 2 - 18;
-            //desconta a altura da nave que é 48
-            nave.y = canvas.height - 48;
+            //Nave
+            nave.posicionar();
             nave.velocidade = 200;
 
             criacaoInimigos();
+
+            //Game Over
+            nave.acabaramVidas = function () {
+                animacao.desligar();
+                alert('GAME OVER');
+            }
         }
 
         function pausarJogo() {
@@ -207,10 +211,10 @@
         function iniciarJogo() {
             //Tiro
             ativarTiro(true);
-            
+
             // Pausa
             teclado.disparou(ENTER, pausarJogo);
-            
+
             document.getElementById('botao_jogar').style.display = 'none';
             musicaAcao.play();
             animacao.ligar();
