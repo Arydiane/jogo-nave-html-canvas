@@ -16,6 +16,7 @@
     <script src="js/ovni.js"></script>
     <script src="js/tiro.js"></script>
     <script src="js/explosao.js"></script>
+    <script src="js/painel.js"></script>
 </head>
 
 <body>
@@ -105,11 +106,13 @@
             estrelas = new Fundo(context, imagens.estrelas);
             nuvens = new Fundo(context, imagens.nuvens);
             nave = new Nave(context, teclado, imagens.nave, imagens.explosao);
+            painel = new Painel(context, nave);
 
             // Ligações entre objetos
             animacao.novoSprite(espaco);
             animacao.novoSprite(estrelas);
             animacao.novoSprite(nuvens);
+            animacao.novoSprite(painel);
             animacao.novoSprite(nave);
 
             colisor.novoSprite(nave);
@@ -137,88 +140,102 @@
                 animacao.desligar();
                 alert('GAME OVER');
             }
-        }
 
-        function pausarJogo() {
-
-            if (animacao.ligado) {
-                animacao.desligar();
-                ativarTiro(false);
-
-                //Escreve mensagem de pausa na tela
-                context.save();
-                context.fillStyle = 'white';
-                context.strokeStyle = 'black';
-                context.font = '50px sans-serif';
-                context.fillText("Pausado", 160, 200);
-                context.strokeStyle("Pausado", 160, 200);
-                context.restore();
-
-            } else {
-                criadorInimigos.ultimoOvni = new Date().getTime();
-                animacao.ligar();
-                ativarTiro(true);
-            }
-        }
-
-        function ativarTiro(ativar) {
-            if (ativar) {
-                teclado.disparou(ESPACO, function () {
-                    nave.atirar();
-                });
-            } else {
-                teclado.disparou(ESPACO, null);
-            }
-        }
-
-        function criacaoInimigos() {
-            criadorInimigos = {
-                ultimoOvni: new Date().getTime(),
-                processar: function () {
-                    let agora = new Date().getTime();
-                    let decorrido = agora - this.ultimoOvni;
-
-                    //verifica se já passou 1s = 1000 milisegundos
-                    if (decorrido > 1000) {
-                        novoOvni();
-                        this.ultimoOvni = agora;
-                    }
+            //Pontuação
+            colisor.aoColidir = function (o1, o2) {
+                // Tiro com Ovni
+                if ((o1 instanceof Tiro && o2 instanceof Ovni) ||
+                    (o1 instanceof Ovni && o2 instanceof Tiro)) {
+                    painel.pontuacao += 10;
                 }
-            };
-
-            animacao.novoProcessamento(criadorInimigos);
+            }
         }
 
-        function novoOvni() {
-            const imgOvni = imagens.ovni;
-            const ovni = new Ovni(context, imgOvni, imagens.explosao);
+            function pausarJogo() {
 
-            // Mínimo: 500; Máximo: 800
-            ovni.velocidade = Math.floor(500 + Math.random() * (800 - 500 + 1));
-            // Mínimo: 0; Máximo: largura do canvas - largura do ovni
-            ovni.x = Math.floor(Math.random() * (canvas.width - imgOvni.width + 1));
-            // Descontar a altura
-            ovni.y = -imgOvni.height;
+                if (animacao.ligado) {
+                    animacao.desligar();
+                    musicaAcao.pause(); 
+                    ativarTiro(false);
 
-            animacao.novoSprite(ovni);
-            colisor.novoSprite(ovni);
-        }
+                    //Escreve mensagem de pausa na tela
+                    context.save();
+                    context.fillStyle = 'white';
+                    context.strokeStyle = 'black';
+                    context.font = '50px sans-serif';
+                    context.fillText("Pausado", 160, 200);
+                    context.strokeStyle("Pausado", 160, 200);
+                    context.restore();
 
-        function mostrarBotaoJogar() {
-            document.getElementById('botao_jogar').style.display = 'block';
-        }
+                } else {
+                    criadorInimigos.ultimoOvni = new Date().getTime();
+                    animacao.ligar();
+                    musicaAcao.play(); 
+                    ativarTiro(true);
+                }
+            }
 
-        function iniciarJogo() {
-            //Tiro
-            ativarTiro(true);
+            function ativarTiro(ativar) {
+                if (ativar) {
+                    teclado.disparou(ESPACO, function () {
+                        nave.atirar();
+                    });
+                } else {
+                    teclado.disparou(ESPACO, null);
+                }
+            }
 
-            // Pausa
-            teclado.disparou(ENTER, pausarJogo);
+            function criacaoInimigos() {
+                criadorInimigos = {
+                    ultimoOvni: new Date().getTime(),
+                    processar: function () {
+                        let agora = new Date().getTime();
+                        let decorrido = agora - this.ultimoOvni;
 
-            document.getElementById('botao_jogar').style.display = 'none';
-            musicaAcao.play();
-            animacao.ligar();
-        }
+                        //verifica se já passou 1s = 1000 milisegundos
+                        if (decorrido > 1000) {
+                            novoOvni();
+                            this.ultimoOvni = agora;
+                        }
+                    }
+                };
+
+                animacao.novoProcessamento(criadorInimigos);
+            }
+
+            function novoOvni() {
+                const imgOvni = imagens.ovni;
+                const ovni = new Ovni(context, imgOvni, imagens.explosao);
+
+                // Mínimo: 500; Máximo: 800
+                ovni.velocidade = Math.floor(500 + Math.random() * (800 - 500 + 1));
+                // Mínimo: 0; Máximo: largura do canvas - largura do ovni
+                ovni.x = Math.floor(Math.random() * (canvas.width - imgOvni.width + 1));
+                // Descontar a altura
+                ovni.y = -imgOvni.height;
+
+                animacao.novoSprite(ovni);
+                colisor.novoSprite(ovni);
+            }
+
+            function mostrarBotaoJogar() {
+                document.getElementById('botao_jogar').style.display = 'block';
+            }
+
+            function iniciarJogo() {
+                //Tiro
+                ativarTiro(true);
+
+                // Pausa
+                teclado.disparou(ENTER, pausarJogo);
+
+                //Pontuação
+                painel.pontuacao = 0;
+
+                document.getElementById('botao_jogar').style.display = 'none';
+                musicaAcao.play();
+                animacao.ligar();
+            }
 
     </script>
 </body>
