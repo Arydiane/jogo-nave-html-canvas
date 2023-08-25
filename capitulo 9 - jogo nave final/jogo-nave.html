@@ -10,6 +10,7 @@
     <script src="js/teclado.js"></script>
     <script src="js/colisor.js"></script>
     <script src="js/fundo.js"></script>
+    <script src="js/spritesheet.js"></script>
     <script src="js/nave.js"></script>
     <script src="js/ovni.js"></script>
     <script src="js/tiro.js"></script>
@@ -37,7 +38,7 @@
                 espaco: 'fundo-espaco.png',
                 estrelas: 'fundo-estrelas.png',
                 nuvens: 'fundo-nuvens.png',
-                nave: 'nave.png',
+                nave: 'nave-spritesheet.png',
                 ovni: 'ovni.png'
             };
 
@@ -89,9 +90,10 @@
             estrelas.velocidade = 150;
             nuvens.velocidade = 500;
 
-            // Nave
-            nave.x = canvas.width / 2 - imagens.nave.width / 2;
-            nave.y = canvas.height - imagens.nave.height;
+            // Nave - desconta a largura da nave/2 = 36/2 = 18
+            nave.x = canvas.width / 2 - 18;
+            //desconta a altura da nave que é 48
+            nave.y = canvas.height - 48;
             nave.velocidade = 200;
 
             // Tiro
