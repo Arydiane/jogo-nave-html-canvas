@@ -1,0 +1,21 @@
+#botao_jogar {
+    display: none;
+    background-color: brown;
+    color: yellow;
+    border-width: 0.1rem;
+    border-radius: 25px;
+    padding: 0.7rem 1rem;
+    font-size: 20px;
+    font-family: sans-serif;
+    font-weight: bold;
+
+    position: absolute;
+    left: 220px;
+    top: 330px;
+}
+
+#botao_jogar:hover {
+    box-shadow: 1px 1px 10px black;
+    color: black;
+    cursor: pointer;
+}

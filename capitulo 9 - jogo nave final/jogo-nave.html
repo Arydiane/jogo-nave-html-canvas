@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
     <title>Jogo de Nave</title>
 
     <script src="js/animacao.js"></script>
@@ -18,8 +19,9 @@
 </head>
 
 <body>
-    <canvas id="canvas_animacao" width="500" height="500">
-    </canvas>
+    <canvas id="canvas_animacao" width="500" height="500"></canvas>
+    <button id="botao_jogar" onclick=iniciarJogo()>Jogar</button>
+
     <script>
         // Canvas e Context
         const canvas = document.getElementById('canvas_animacao');
@@ -28,9 +30,11 @@
         // Variáveis principais
         let imagens, animacao, teclado, colisor, nave, criadorInimigos;
         let totalImagens = 0, carregadas = 0;
+        var musicaAcao;
 
-        // Começa carregando as imagens
+        // Começa carregando as imagens e músicas
         carregarImagens();
+        carregarMusicas();
 
         function carregarImagens() {
 
@@ -55,10 +59,40 @@
             }
         }
 
+        function carregarMusicas() {
+            musicaAcao = new Audio();
+            musicaAcao.src = 'sound/musica-acao.mp3';
+            musicaAcao.load();
+            musicaAcao.volume = 0.8;
+            musicaAcao.loop = true;
+        }
+
         function carregando() {
+            context.save();
+
+            //Fundo 
+            context.drawImage(imagens.espaco, 0, 0, canvas.width, canvas.height)
+
+            //Escreve o texto "Carregando" na tela
+            context.fillStyle = 'white';
+            context.strokeStyle = 'black';
+            context.font = '50px sans-serif';
+            context.fillText("Carregando...", 100, 200);
+            context.strokeText("Carregando...", 100, 200);
+
+            //Barra de loading
             carregadas++;
+
+            const tamanhoTotal = 300;
+            let tamanho = carregadas / totalImagens * tamanhoTotal;
+            context.fillStyle = 'yellow';
+            context.fillRect(100, 250, tamanho, 50);
+
+            context.restore();
+
             if (carregadas == totalImagens) {
                 iniciarObjetos();
+                mostrarBotaoJogar();
             }
         }
 
@@ -98,13 +132,6 @@
             nave.y = canvas.height - 48;
             nave.velocidade = 200;
 
-            // Tiro
-            ativarTiro(true);
-
-            //Pausa
-            teclado.disparou(ENTER, pausarJogo);
-
-            animacao.ligar();
             criacaoInimigos();
         }
 
@@ -171,6 +198,22 @@
 
             animacao.novoSprite(ovni);
             colisor.novoSprite(ovni);
+        }
+
+        function mostrarBotaoJogar() {
+            document.getElementById('botao_jogar').style.display = 'block';
+        }
+
+        function iniciarJogo() {
+            //Tiro
+            ativarTiro(true);
+            
+            // Pausa
+            teclado.disparou(ENTER, pausarJogo);
+            
+            document.getElementById('botao_jogar').style.display = 'none';
+            musicaAcao.play();
+            animacao.ligar();
         }
 
     </script>
