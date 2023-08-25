@@ -6,8 +6,12 @@ function Explosao(context, imagem, x, y) {
     this.x = x;
     this.y = y;
     let explosao = this;
+    this.fimDaExplosao = null;
     this.spritesheet.fimDoCiclo = function () {
         explosao.animacao.excluirSprite(explosao);
+        if (explosao.fimDaExplosao) {
+            explosao.fimDaExplosao();
+        }
     }
 }
 Explosao.prototype = {
