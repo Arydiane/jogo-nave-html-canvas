@@ -7,8 +7,10 @@ function Fundo(context, imagem) {
 
 Fundo.prototype = {
     atualizar: function () {
+
         // Atualizar a posição de emenda
-        this.posicaoEmenda += this.velocidade;
+        //velocidade é em pixel por segundo e tempo decorrido em millisegundos (divide-se por 1000 para transformar o tempo em segundos)
+        this.posicaoEmenda += this.velocidade * this.animacao.decorrido / 1000;
 
         // Emenda passou da posição
         if (this.posicaoEmenda > this.imagem.height){

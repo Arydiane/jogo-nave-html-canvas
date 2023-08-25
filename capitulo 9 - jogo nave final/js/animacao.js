@@ -5,6 +5,8 @@ function Animacao(context) {
     this.processamentos = [];
     this.spritesExcluir = [];
     this.processamentosExcluir = [];
+    this.ultimoCiclo = 0;
+    this.decorrido = 0;
     this.ligado = false;
 }
 
@@ -28,6 +30,13 @@ Animacao.prototype = {
         // Posso continuar?
         if (!this.ligado) return;
 
+        //Calcula o tempo decorrido entre os ciclos
+        let agora = new Date().getTime();
+        if (this.ultimoCiclo == 0) {
+            this.ultimoCiclo = agora;
+        }
+        this.decorrido = agora - this.ultimoCiclo;
+
         // A cada ciclo, limpamos a tela ou desenhamos um fundo
         //this.limparTela();
 
@@ -48,6 +57,9 @@ Animacao.prototype = {
 
         // Processamento de exclusões
         this.processarExclusoes();
+
+        // Atualizar o instante do último ciclo
+        this.ultimoCiclo = agora;
 
         // Chamamos o próximo ciclo
         let animacao = this;

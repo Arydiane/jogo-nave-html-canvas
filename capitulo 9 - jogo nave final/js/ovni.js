@@ -8,7 +8,7 @@ function Ovni(context, imagem) {
 
 Ovni.prototype = {
     atualizar: function () {
-        this.y += this.velocidade;
+        this.y += this.velocidade * this.animacao.decorrido / 1000;
         if (this.y > this.context.canvas.height) {
             this.animacao.excluirSprite(this);
             this.colisor.excluirSprite(this);
@@ -28,17 +28,15 @@ Ovni.prototype = {
             { x: this.x + 20, y: this.y + 23, largura: 25, altura: 7 },
         ];
 
-        // Desenhando os retângulos para visualização
-        const ctx = this.context;
-
-        for (let i in rets) {
-
-            ctx.save();
-            ctx.strokeStyle = 'yellow';
-            ctx.strokeRect(rets[i].x, rets[i].y, rets[i].largura,
-                rets[i].altura);
-            ctx.restore();
-        }
+        // // Desenhando os retângulos para visualização
+        // const ctx = this.context;
+        // for (let i in rets) {
+        //     ctx.save();
+        //     ctx.strokeStyle = 'yellow';
+        //     ctx.strokeRect(rets[i].x, rets[i].y, rets[i].largura,
+        //         rets[i].altura);
+        //     ctx.restore();
+        // }
 
         return rets;
     },

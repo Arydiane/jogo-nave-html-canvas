@@ -8,14 +8,13 @@ function Tiro(context, nave) {
     this.altura = 20;
     this.x = nave.x + nave.imagem.width / 2 - this.largura / 2;
     this.y = nave.y - this.altura;
-    this.velocidade = 10;
+    this.velocidade = 400;
 
 }
 
 Tiro.prototype = {
     atualizar: function () {
-       
-        this.y -= this.velocidade;
+        this.y -= this.velocidade * this.animacao.decorrido / 1000;
         // Excluir o tiro quando sumir da tela
         if (this.y < -this.altura) {
             this.animacao.excluirSprite(this);
@@ -41,5 +40,6 @@ Tiro.prototype = {
         ]
     },
     colidiuCom: function (outro) {
+        
     }
 }
