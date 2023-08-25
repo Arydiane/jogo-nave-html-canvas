@@ -2,8 +2,8 @@ const SETA_ESQUERDA = 'ArrowLeft';
 const SETA_DIREITA = 'ArrowRight'; 
 const SETA_ACIMA = 'ArrowUp'; 
 const SETA_ABAIXO = 'ArrowDown'; 
-
 const ESPACO = ' '; 
+const ENTER = "Enter"; 
 
 //KeyCode
 // const SETA_ESQUERDA = 37; 
@@ -11,7 +11,7 @@ const ESPACO = ' ';
 //const SETA_CIMA = 38; 
 //const SETA_BAIXO = 40; 
 // const ESPACO = 32; 
-
+// const ENTER = 13;
 
 function Teclado(elemento) {
     this.elemento = elemento; 

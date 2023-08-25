@@ -99,12 +99,45 @@
             nave.velocidade = 200;
 
             // Tiro
-            teclado.disparou(ESPACO, function () {
-                nave.atirar();
-            });
+            ativarTiro(true);
+
+            //Pausa
+            teclado.disparou(ENTER, pausarJogo);
 
             animacao.ligar();
             criacaoInimigos();
+        }
+
+        function pausarJogo() {
+
+            if (animacao.ligado) {
+                animacao.desligar();
+                ativarTiro(false);
+
+                //Escreve mensagem de pausa na tela
+                context.save();
+                context.fillStyle = 'white';
+                context.strokeStyle = 'black';
+                context.font = '50px sans-serif';
+                context.fillText("Pausado", 160, 200);
+                context.strokeStyle("Pausado", 160, 200);
+                context.restore();
+
+            } else {
+                criadorInimigos.ultimoOvni = new Date().getTime();
+                animacao.ligar();
+                ativarTiro(true);
+            }
+        }
+
+        function ativarTiro(ativar) {
+            if (ativar) {
+                teclado.disparou(ESPACO, function () {
+                    nave.atirar();
+                });
+            } else {
+                teclado.disparou(ESPACO, null);
+            }
         }
 
         function criacaoInimigos() {
