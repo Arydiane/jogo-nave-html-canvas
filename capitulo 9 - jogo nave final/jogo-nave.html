@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <title>Jogo de Nave</title>
+    
+    <title>Jogo Nave</title>
 
     <script src="js/animacao.js"></script>
     <script src="js/teclado.js"></script>
@@ -20,9 +23,15 @@
 </head>
 
 <body>
-    <canvas id="canvas_animacao" width="500" height="500"></canvas>
-    <button id="botao_jogar" onclick=iniciarJogo()>Jogar</button>
-
+    <main id="container">
+        <h1 id="titulo">Jogo Nave Espacial</h1>
+        <canvas id="canvas_animacao" width="500" height="500"></canvas>
+        <button id="botao_jogar" onclick=iniciarJogo()>Jogar</button>
+        <p id="legenda">
+            COMANDOS - <strong>Setas:</strong> movimentam a nave - <strong>Barra de espaço:</strong> atira -
+            <strong>Enter:</strong> pausa
+        </p>
+    </main>
     <script>
         // Canvas e Context
         const canvas = document.getElementById('canvas_animacao');
@@ -77,7 +86,7 @@
             //Escreve o texto "Carregando" na tela
             context.fillStyle = 'white';
             context.strokeStyle = 'black';
-            context.font = '50px sans-serif';
+            context.font = "50px Russo One, sans-serif";
             context.fillText("Carregando...", 100, 200);
             context.strokeText("Carregando...", 100, 200);
 
@@ -87,7 +96,7 @@
             const tamanhoTotal = 300;
             let tamanho = carregadas / totalImagens * tamanhoTotal;
             context.fillStyle = 'yellow';
-            context.fillRect(100, 250, tamanho, 50);
+            context.fillRect(100, 250, tamanho, 20);
 
             context.restore();
 
@@ -162,9 +171,9 @@
                 context.save();
                 context.fillStyle = 'white';
                 context.strokeStyle = 'black';
-                context.font = '50px sans-serif';
-                context.fillText("Pausado", 160, 200);
-                context.strokeText("Pausado", 160, 200);
+                context.font = "50px Russo One, sans-serif";
+                context.fillText("Pausado", 160, 250);
+                context.strokeText("Pausado", 160, 250);
                 context.restore();
 
             } else {
@@ -250,7 +259,7 @@
             // Parar a música e rebobinar
             musicaAcao.pause();
             musicaAcao.currentTime = 0.0;
- 
+
             // Tirar todos os inimigos da tela
             removerInimigos();
 
@@ -261,9 +270,9 @@
             context.save();
             context.fillStyle = 'white';
             context.strokeStyle = 'black';
-            context.font = '70px sans-serif';
-            context.fillText("GAME OVER", 40, 200);
-            context.strokeText("GAME OVER", 40, 200);
+            context.font = "70px Russo One, sans-serif";
+            context.fillText("GAME OVER", 40, 250);
+            context.strokeText("GAME OVER", 40, 250);
             context.restore();
 
             // Volta o botão "Jogar"
@@ -280,7 +289,7 @@
             for (let i in animacao.sprites) {
                 if (animacao.sprites[i] instanceof Ovni) {
                     animacao.excluirSprite(animacao.sprites[i]);
-                }     
+                }
             }
         }
 
